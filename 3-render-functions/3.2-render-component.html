@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<div id="app">
+		<example :ok="ok"></example>
+		<button @click="ok = !ok"></button>
+	</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+	const Foo = {
+		// functional: true, 
+		render: h => h('div','foo')
+	}
+	const Bar = {
+		render: h => h('div','bar')
+	}
+	Vue.component('example', {
+		props: ['ok'],
+		render(h) {
+			return this.ok ? h(Foo) : h(Bar)
+		}
+	})
+	new Vue({
+		el: '#app',
+		data: {ok: true}
+	})
+
+</script>
+</body>
+</html>

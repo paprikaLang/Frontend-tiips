@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue.use(RulesPlugins)</title>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+const RulesPlugin = {
+	install(Vue) {
+		Vue.mixin({
+			created() {
+				if (this.$options.rules) {
+					Object.keys(this.$options.rules).forEach(key => {
+						const rule = this.$options.rules[key]
+						this.$watch(key, newValue => {
+							const result = rule.validate(newValue)
+							if (!result) {
+								console.log(rule.message)
+							}
+						})
+					})
+				}
+			}
+		})
+	}
+}
+Vue.use(RulesPlugin)
+const vm = new Vue({
+	data: {foo: 10},
+	rules: {
+		foo: {
+			validate: value => value > 1,
+			message: 'foo must be greater than one'
+		}
+	}
+})
+// vm.foo = 0
+// index.html:19 foo must be greater than one
+</script>
+</body>
+</html>
